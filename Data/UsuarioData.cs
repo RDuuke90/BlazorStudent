@@ -14,11 +14,11 @@ public class UsuarioData
     {
         List<UsuarioDTO> ListUsuario = new ();
         Random random = new Random();
-        for(var i = 1; i < 5; i++) {
+        for(var i = 0; i < 3; i++) {
             UsuarioDTO usuario = new UsuarioDTO {
-                    Id = i,
-                    Nombres = this.Nombres[random.Next(3)],
-                    Apellidos = this.Apellidos[random.Next(3)],
+                    Id = i+1,
+                    Nombres = this.Nombres[i],
+                    Apellidos = this.Apellidos[i],
                     Edad = random.Next(100)
             };
             ListUsuario.Add(usuario);

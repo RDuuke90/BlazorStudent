@@ -1,0 +1,22 @@
+@page "/usuarios/{id:int}/detalles"
+@using UserCrud.Data
+
+<h1>Datos del usuario: @Usuario.Nombres @Usuario.Apellidos</h1>
+
+
+@code {
+    [Parameter]
+    public int Id { get; set;}
+
+    private UsuarioDTO Usuario;
+
+
+    protected override void OnInitialized()
+    {
+        UsuarioData usuarioBD = new UsuarioData();
+        List<UsuarioDTO> usuarios = usuarioBD.GetUsuarios();
+
+        Usuario = usuarios[this.Id-1];
+
+    }
+}
