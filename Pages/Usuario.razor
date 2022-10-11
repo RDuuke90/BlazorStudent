@@ -1,0 +1,87 @@
+@page "/usuarios"
+@using UserCrud.Data
+
+<h1>Lista de usuarios</h1>
+
+<div class="mb-3">
+  <label for="exampleFormControlInput1" class="form-label">Nombres</label>
+  <input type="text" class="form-control" @bind="nombres" placeholder="nombres...">
+</div>
+<div class="mb-3">
+  <label for="exampleFormControlInput1" class="form-label">Apellidos</label>
+  <input type="text" class="form-control" @bind="apellidos" placeholder="apellidos...">
+</div>
+<div class="mb-3">
+  <label for="exampleFormControlInput1" class="form-label">Edad</label>
+  <input type="number" class="form-control" @bind="edad" placeholder="edad...">
+</div>
+<button class="btn btn-success" @onclick="AgregarUsuario">Guardar</button>
+<br>
+<table class="table">
+    <thead>
+        <tr>
+            <td>ID</td>
+            <td>Nombres</td>
+            <td>Apellidos</td>
+            <td>Edad</td>
+            <td></td>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var usuario in usuarios)
+        {
+            <tr>
+                <td>@usuario.Id</td>
+                <td>@usuario.Nombres</td>
+                <td>@usuario.Apellidos</td>
+                <td>@usuario.Edad</td>
+                <td>
+                    <button class="btn btn-danger" @onclick="() => EliminarUsuario(usuario)">
+                        Elimar
+                    </button>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+@code {
+    
+    private string? nombres;
+    private string? apellidos;
+    private string? edad;
+    public List<UsuarioDTO> usuarios = new();
+
+    private void AgregarUsuario()
+    {
+        if(
+            !string.IsNullOrWhiteSpace(nombres) &&
+            !string.IsNullOrWhiteSpace(apellidos) &&
+            !string.IsNullOrWhiteSpace(edad)
+        ) {
+            usuarios.Add(
+                new UsuarioDTO {
+                    Id = usuarios.Count + 1,
+                    Nombres = nombres,
+                    Apellidos = apellidos,
+                    Edad = int.Parse(edad)
+                }
+            );
+            nombres = string.Empty;
+            apellidos = string.Empty;
+            edad = string.Empty;
+        }
+    }
+
+    private void EliminarUsuario(UsuarioDTO usuario)
+    {
+        Console.WriteLine("Ingreso");
+        usuarios.Remove(usuario);
+    }
+
+    protected override void OnInitialized()
+    {
+        UsuarioData usuarioBD = new UsuarioData();
+        usuarios = usuarioBD.GetUsuarios();
+    }
+}
